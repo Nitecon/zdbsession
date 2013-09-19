@@ -1,0 +1,29 @@
+{
+    "name": "nitecon/zdbsession",
+    "description": "Zend Framework 2 DB Session managment with doctrine",
+    "type": "library",
+    "keywords": ["zf2","cms","zcms"],
+    "homepage": "https://github.com/Nitecon/zdbsession",
+    "license": "New BSD License",
+    "authors": [
+        {
+            "name": "Will Hattingh",
+            "email": "w.hattingh@nitecon.com",
+            "homepage": "http://www.nitecon.com/",
+            "role": "Master"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.*",
+        "doctrine/doctrine-orm-module": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "zDbSession": "src/"
+        },
+        "classmap": [
+            "Module.php"
+        ]
+    }
+}
