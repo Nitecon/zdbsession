@@ -19,6 +19,8 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        $storage = new \zDbSession\Storage\StorageAdapter($e->getApplication()->getServiceManager());
+        $storage->setSessionStorage();
     }
 
     public function getConfig()
