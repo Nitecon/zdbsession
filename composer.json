@@ -2,7 +2,7 @@
     "name": "nitecon/zdbsession",
     "description": "Zend Framework 2 DB Session managment with doctrine",
     "type": "library",
-    "keywords": ["zf2", "cms", "zcms"],
+    "keywords": ["zf2", "doctrine", "session"],
     "homepage": "https://github.com/Nitecon/zdbsession",
     "license": "New BSD License",
     "authors": [
