@@ -4,5 +4,4 @@ return array(
   'zDbSession\Module'                      => __DIR__ . '/Module.php',
   'zDbSession\Entity\Session'              => __DIR__ . '/src/zDbSession/Entity/Session.php',
   'zDbSession\SaveHandler\DoctrineGateway' => __DIR__ . '/src/zDbSession/SaveHandler/DoctrineGateway.php',
-  'zDbSession\Storage\StorageAdapter'      => __DIR__ . '/src/zDbSession/Storage/StorageAdapter.php',
 );

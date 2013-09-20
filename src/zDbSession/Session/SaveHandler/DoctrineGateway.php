@@ -12,7 +12,7 @@
  * @author whatting
  */
 
-namespace zDbSession\SaveHandler;
+namespace zDbSession\Session\SaveHandler;
 
 use Zend\Session\SaveHandler\SaveHandlerInterface;
 use Doctrine\ORM\EntityManager;
@@ -26,7 +26,6 @@ class DoctrineGateway implements SaveHandlerInterface {
      */
     protected $sessionSavePath;
 
-    protected $entityName = 'zDbSession\Entity\Session';
     /**
      * Session Name
      *
@@ -42,12 +41,14 @@ class DoctrineGateway implements SaveHandlerInterface {
 
     /** @var \Zend\ServiceManager\ServiceLocatorInterface */
     protected $sm;
-    /** @var \Doctrine\ORM\EntityManager */
     protected $em;
 
+    /**
+     * 
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceManager
+     */
     public function __construct(\Zend\ServiceManager\ServiceLocatorInterface $serviceManager) {
         $this->sm = $serviceManager;
-        $this->em = $this->getEntityManager();
     }
 
     /**
@@ -81,8 +82,7 @@ class DoctrineGateway implements SaveHandlerInterface {
      * @return string
      */
     public function read($id) {
-        $repository = $this->getEntityManager()->getRepository($this->entityName);
-        $rows = $repository->findBy(array("id" => $id));
+        $rows = $this->getEntityManager()->find('zDbSession\Entity\Session', $id);
         if (count($rows) > 0) {
             if ($rows->getModified() + $rows->getLifetime() > time()) {
                 return $rows->getData();
@@ -100,14 +100,16 @@ class DoctrineGateway implements SaveHandlerInterface {
      * @return bool
      */
     public function write($id, $data) {
-        $entity = new \zDbSession\Entity\Session();
+        $repo = $this->getEntityManager()->getRepository('zDbSession\Entity\Session');
+        if (!$entity = $repo->findOneBy(array('id' => $id)))
+            $entity = new \zDbSession\Entity\Session();
         $entity->setModified(time());
         $entity->setData((string) $data);
         $entity->setId($id);
         $entity->setName($this->sessionName);
         $entity->setLifetime($this->lifetime);
-        $this->em->persist($entity);
-        $this->em->flush();
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
         return \TRUE;
     }
 
@@ -118,10 +120,10 @@ class DoctrineGateway implements SaveHandlerInterface {
      * @return bool
      */
     public function destroy($id) {
-        return (bool) $this->tableGateway->delete(array(
-                    $this->options->getIdColumn() => $id,
-                    $this->options->getNameColumn() => $this->sessionName,
-        ));
+        $entity = $this->getEntityManager()->find('zDbSession\Entity\Session', $id);
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
+        return \TRUE;
     }
 
     /**
@@ -131,9 +133,13 @@ class DoctrineGateway implements SaveHandlerInterface {
      * @return true
      */
     public function gc($maxlifetime) {
-        $platform = $this->tableGateway->getAdapter()->getPlatform();
-        return (bool) $this->tableGateway->delete(sprintf('%s + %s < %d', $platform->quoteIdentifier($this->options->getModifiedColumn()), $platform->quoteIdentifier($this->options->getLifetimeColumn()), time()
-        ));
+        $repo = $this->getEntityManager()->getRepository("zDbSession\Entity\Session");
+        $collection = $repo->findAll();
+        $criteria = new \Doctrine\Common\Collections\Criteria();
+        $criteria->andWhere($criteria->expr()->lt('modified', time() + $this->lifetime));
+        $this->getEntityManager()->remove($collection->matching($criteria));
+        $this->getEntityManager()->flush();
+        return \TRUE;
     }
 
     /**
