@@ -3,7 +3,7 @@
 return array(
     'service_manager' => array(
         'factories' => array(
-            'doctrine.cache.fscache' => function(\Zend\ServiceManager\ServiceManager $sm) {
+            'doctrine.cache.sessioncache' => function(\Zend\ServiceManager\ServiceManager $sm) {
                 $cache = new \Doctrine\Common\Cache\FilesystemCache('data/cache');
                 return $cache;
             }
@@ -13,7 +13,7 @@ return array(
         'driver' => array(
             'zdbsession_entities' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'fscache',
+                'cache' => 'sessioncache',
                 'paths' => array(__DIR__ . '/../src/zDbSession/Entity')
             ),
             'orm_default' => array(
