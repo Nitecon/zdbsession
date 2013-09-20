@@ -1,0 +1,47 @@
+<?php
+
+return array(
+    'service_manager' => array(
+        'factories' => array(
+            'doctrine.cache.sessioncache' => function() {
+                $zendCache = new \Zend\Cache\Storage\Adapter\Memory();
+                $cache = new \DoctrineModule\Cache\ZendStorageCache($zendCache);
+                /* I've added the additional line below that could be used as an
+                 * example to the other cache handlers that are available.
+                 * By default it's set to use ZendStorageCache (Enabled above)
+                 */
+                //$cache = new \Doctrine\Common\Cache\FilesystemCache("data/cache");
+                return $cache;
+            }
+        )
+    ),
+    'doctrine' => array(
+        'driver' => array(
+            'zdbsession_entities' => array(
+                'cache' => 'sessioncache',
+            )
+        )
+    ),
+    'zDbSession' => array(
+        /*
+         * Please note that before you enable the zDbSession make sure to import the schema first
+         * into your database or it will cause your application to die with a fatal error.
+         * For more information about this please consult the readme file.
+         */
+        'enabled' => \FALSE,
+        /* Below is the standard configuration as per Zend Session Config, consult
+         * the ZF2 documentation (haha) or just post on stack overflow on the settings details.
+         */
+        'sessionConfig' => array(
+            'cache_expire' => 86400,
+            //'cookie_domain' => 'mydomain.com',
+            //'name' => 'mydomain',
+            'cookie_lifetime' => 1800,
+            'gc_maxlifetime' => 1800,
+            'cookie_path' => '/',
+            'cookie_secure' => TRUE,
+            'remember_me_seconds' => 3600,
+            'use_cookies' => TRUE,
+        )
+    ),
+);

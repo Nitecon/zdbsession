@@ -23,7 +23,7 @@ class Module {
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
         $settings = $e->getApplication()->getServiceManager()->get("Config");
-        if ($settings['zDbSession']['enabled']) {
+        if (isset($settings['zDbSession']) && $settings['zDbSession']['enabled']) {
             $sessionConfig = new \Zend\Session\Config\SessionConfig();
             $sessionConfig->setOptions($settings['zDbSession']['sessionConfig']);
             $saveHandler = new DoctrineGateway($e->getApplication()->getServiceManager());
