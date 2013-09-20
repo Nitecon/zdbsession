@@ -1,7 +1,12 @@
 zDbSession
 ==========
 
-ZF2 module for saving sessions to database using doctrine entities, this module will deprecate my previous db session module
+ZF2 module for saving sessions to database using doctrine entities, this module will deprecate my previous db session module.
+I've decided to use this module in favor of my old db session module to the wide array of supported db systems that doctrine
+provides in a more easily workable solution for everyone that may want to use the module.
+
+An example of this is someone using a doctrine connection for oracle will be able to dump the correct schema for their
+database by using the orm schema tools without relying on me to create schema's for all databases.
 
 Pre-Install Notice
 ==================
