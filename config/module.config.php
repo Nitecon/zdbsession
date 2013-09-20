@@ -30,6 +30,9 @@ return array(
          * For more information about this please consult the readme file.
          */
         'enabled' => \TRUE,
+        /* Below is the standard configuration as per Zend Session Config, consult
+         * the ZF2 documentation (haha) or just post on stack overflow on the settings details.
+         */
         'sessionConfig' => array(
             'cache_expire' => 86400,
             //'cookie_domain' => 'mydomain.com',
