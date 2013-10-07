@@ -1,47 +1,23 @@
 zDbSession
 ==========
 
-ZF2 module for saving sessions to database using doctrine entities, this module will deprecate my previous db session module.
-I've decided to use this module in favor of my old db session module to the wide array of supported db systems that doctrine
-provides in a more easily workable solution for everyone that may want to use the module.
+Note: using a mapper for sessions may cause anxiety attacks, panic and
+chaos. I did it and I confirm the symptoms. You should probably use the raw
+dbal connection
+…
 
-An example of this is someone using a doctrine connection for oracle will be able to dump the correct schema for their
-database by using the orm schema tools without relying on me to create schema's for all databases.
+On 7 Jun 2013 00:05, "Tim Roediger" <notifications@github.com> wrote:
+ It can be done. As @bakura10 <https://github.com/bakura10> said, just
+ write a new storage class and specify it in the config. However, you may
+ want to avoid using doctrine itself to persist to the db. If you do, you
+ can't use anything in the session until after doctrine has bootstrapped,
+ which is normally later than you might want in the zf2 request handling
+ process.
 
-Pre-Install Notice
-==================
-Please note that this module assumes that you already use doctrine orm module in your application if you are not
-currently using it then you can still use this module by configuring it.  Due to the requirements in composer.json
-it should auto install DoctrineModule and DoctrineORMModule for you.  But you will still need to configure it.
-
-To do this:
-  1. Add `DoctrineModule` and `DoctrineORMModule` to your `./config/application.config.php`
-  2. Add the following code snippet to your `./config/autoload/local.php`
-<pre>'doctrine' => array(
-        'connection' => array(
-            'orm_default' => array(
-                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
-                'params' => array(
-                    'host' => 'localhost',
-                    'port' => '3306',
-                    'user' => 'yourdbuser',
-                    'password' => 'yourpassword',
-                    'dbname' => 'yourdbname'
-                )
-            )
-        ),
-  ),</pre>
-
-Please Note
-===========
-The above code snippet is just an example for MySQL using the PDO driver.  You will still need to alter it to match your database
-
-Installation
-============
-  1. Run `php composer.phar require nitecon/zdbsession:dev-master`
-  2. Add `zDbSession` to the enabled modules list
-  3. Copy `./vendor/nitecon/zdbsession/config/zDbSession.local.php.dist` => `./config/autoload/zDbSession.local.php`
-  4. Make sure to import the schema before setting `enabled` to `\TRUE` in `./config/autoload/zDbSession.local.php`
-  5. Set `'enabled' => \TRUE,` in ./config/autoload/zDbSession.local.php
-  6. Configure your session options & doctrine entity cache manager in `./config/autoload/zDbSession.local.php`
-  7. Enjoy & Help support by submitting issues & bug fixes!
+ —
+ Reply to this email directly or view it on GitHub<https://github.com/doctrine/DoctrineModule/issues/270#issuecomment-19077445>
+ 
+ After many hours of trying to get this to work properly I finally gave up, as mentioned above the main issue that exists
+ is "you can't use anything in the session until after doctrine has bootstrapped" which is rather annoying issue to get
+ by.  I will leave the module up for educational purposes only but my other DBSessionStorage module should be used in
+ place of this one.
