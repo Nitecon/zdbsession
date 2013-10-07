@@ -21,3 +21,5 @@ On 7 Jun 2013 00:05, "Tim Roediger" <notifications@github.com> wrote:
  is "you can't use anything in the session until after doctrine has bootstrapped" which is rather annoying issue to get
  by.  I will leave the module up for educational purposes only but my other DBSessionStorage module should be used in
  place of this one.
+ 
+ Link for DBSessionStorage is here: https://github.com/Nitecon/DBSessionStorage
